@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda en Línea</title>
+    <style>
+        @font-face {
+            font-family: 'Komika-Title-Kaps';
+            src: url(KomikaTitleKaps.ttf) format('truetype');
+        }
+        body {
+            font-family: 'Komika-Title-Kaps', Arial, sans-serif;
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+            background-color: #f3b9cb;
+        }
+
+        header {
+            background-color: #f3b9cb;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .menu {
+            background-color: #f3b9cb;
+            overflow: hidden;
+            margin-bottom: 0px; 
+        }
+
+        .menu ul {
+            padding: 0px 0;
+            margin: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        .menu ul li {
+            display: inline-block;
+            margin: 0px; 
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            display: inline-block;
+            position: relative; 
+        }
+
+        .menu ul li a img {
+            max-width: 100%; 
+            height: auto;
+        }
+
+        .menu ul li a .hover-image {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-width: 100%; 
+            height: auto;
+        }
+
+        .menu ul li a:hover .hover-image {
+            display: block;
+        }
+
+        .banner {
+            width: 100%;
+            max-height: 450px; 
+            background-image: url('banner-highres.png'); 
+            background-size: cover;
+            background-position: center;
+            border: none; 
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding-top: 0px; 
+            background-color: #f3b9cb; 
+        }
+
+        .white-box {
+            background: #fff; 
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .product {
+            background: #fff; 
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            width: calc(25% - 40px);
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .cart-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            float: left;
+            margin-right: 10px;
+        }
+        
+        .cart-item h3, .cart-item p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-item .price {
+            color: #555;
+            font-size: 1.2em;
+        }
+
+        .cart-item .remove-button {
+            float: right;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-item .remove-button:hover {
+            background-color: #c82333;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+        }
+
+        footer {
+            background-color: #ea899a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            max-width: 300px; 
+        }
+
+        .product h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .product p {
+            color: #555;
+        }
+
+        .product .price {
+            color: #555;
+            font-size: 1.2em;
+        }
+
+        .product .buy-button {
+            background-color: #fff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1em;
+        }
+
+        .product .buy-button:hover {
+            background-color: #fff;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+        }
+
+        footer {
+            background-color: #ea899a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        #cart {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        #cart img {
+            width: 70px; 
+            height: auto;
+        }
+        
+        .buy-button img {
+            width: 200px;
+            height: auto;
+        }
+
+        /* Estilos para el modal */
+        .modal {
+            display: none; /* Ocultar el modal por defecto */
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+		
+		/* Estilos para los botones de redes sociales */
+        .social-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000; /* Asegura que esté encima de otros elementos */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-buttons a {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .social-buttons img {
+            width: 40px; /* Ajusta el tamaño según sea necesario */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="banner-container">
+            <a href="menu.html">
+                <img src="banner.png" alt="Banner" class="banner">
+            </a>
+        </div>
+    </header>
+    <nav class="menu">
+        <ul>
+            <li>
+                <a href="keychains.html">
+                    <img id="keychains-icon" src="keychains-icon.png" alt="Keychains"
+                         data-normal-image="keychains-icon.png"
+                         data-active-image="keychains-icon-active.png">
+                    <img class="hover-image" src="keychains-icon-hover.png" alt="Keychains Hover">
+                </a>
+            </li>
+            <li>
+                <a href="tarot.html">
+                    <img id="tarot-icon" src="tarot-icon.png" alt="Tarot"
+                         data-normal-image="tarot-icon.png"
+                         data-active-image="tarot-icon-active.png">
+                    <img class="hover-image" src="tarot-icon-hover.png" alt="Tarot Hover">
+                </a>
+            </li>
+            <li>
+                <a href="prints.html">
+                    <img id="prints-icon" src="prints-icon-hover.png" alt="Prints"
+                         data-normal-image="prints-icon.png"
+                         data-active-image="prints-icon-active.png">
+                    <img class="hover-image" src="prints-icon-hover.png" alt="Prints Hover">
+                </a>
+            </li>
+            <li>
+                <a href="dakimakura.html">
+                    <img id="dakimakura-icon" src="dakimakura-icon.png" alt="Dakimakura"
+                         data-normal-image="dakimakura-icon.png"
+                         data-active-image="dakimakura-icon-active.png">
+                    <img class="hover-image" src="dakimakura-icon-hover.png" alt="Dakimakura Hover">
+                </a>
+            </li>
+            <li>
+                <a href="mousepads.html">
+                    <img id="mousepads-icon" src="mousepads-icon.png" alt="Mousepads"
+                         data-normal-image="mousepads-icon.png"
+                         data-active-image="mousepads-icon-active.png">
+                    <img class="hover-image" src="mousepads-icon-hover.png" alt="Mousepads Hover">
+                </a>
+            </li>
+            <li            >
+                <a href="standees.html">
+                    <img id="standees-icon" src="standees-icon.png" alt="Standees"
+                         data-normal-image="standees-icon.png"
+                         data-active-image="standees-icon-active.png">
+                    <img class="hover-image" src="standees-icon-hover.png" alt="Standees Hover">
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="white-box">
+            <div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\aries.png" alt="Aries" onclick="openModal('print/aries.png')">
+                <h3>Aries</h3>
+                <p>Descripción del producto 1.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('Aries', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+
+            <div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\angel.png" alt="Angel" onclick="openModal('print/angel.png')">
+                <h3>Angel</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('Angel', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\amongus.png" alt="amongus" onclick="openModal('print/amongus.png')">
+                <h3>Amongus</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('Amongus', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\avatar.png" alt="avatar" onclick="openModal('print/avatar.png')">
+                <h3>Avatar</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('Avatar', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\bowser.png" alt="bowser" onclick="openModal('print/bowser.png')">
+                <h3>bowser</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('bowser', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\caballo.png" alt="caballo" onclick="openModal('print/caballo.png')">
+                <h3>caballo</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('caballo', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\catnoir.png" alt="catnoir" onclick="openModal('print/catnoir.png')">
+                <h3>catnoir</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('catnoir', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\chrom.png" alt="chrom" onclick="openModal('print/chrom.png')">
+                <h3>chrom</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('chrom', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\claudebeylith.png" alt="claudebeylith" onclick="openModal('print/claudebeylith.png')">
+                <h3>claudebeylith</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('claudebeylith', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\cyberpunk.png" alt="cyberpunk" onclick="openModal('print/cyberpunk.png')">
+                <h3>cyberpunk</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('cyberpunk', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\cyberpunk1.png" alt="cyberpunk" onclick="openModal('print/cyberpunk1.png')">
+                <h3>cyberpunk 1</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('cyberpunk 1', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\cyberpunk2.png" alt="cyberpunk2" onclick="openModal('print/cyberpunk2.png')">
+                <h3>cyberpunk 2</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('cyberpunk 2', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\genos.png" alt="genos" onclick="openModal('print/genos.png')">
+                <h3>genos</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('genos', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\genos1.png" alt="genos1" onclick="openModal('print/genos1.png')">
+                <h3>genos 1</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('genos 1', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\geo.png" alt="geo" onclick="openModal('print/geo.png')">
+                <h3>geo</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('geo', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\haida.png" alt="haida" onclick="openModal('print/haida.png')">
+                <h3>haida</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('Phaida', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\ikeranulf.png" alt="ikeranulf" onclick="openModal('print/ikeranulf.png')">
+                <h3>ikeranulf</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('ikeranulf', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\ikeranulf2.png" alt="ikeranulf2" onclick="openModal('print/ikeranulf2.png')">
+                <h3>ikeranulf 2</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('ikeranulf 2', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\ikeranulf3.png" alt="ikeranulf3" onclick="openModal('print/ikeranulf3.png')">
+                <h3>ikeranulf 3</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('ikeranulf 3', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\ikeranulf4.png" alt="ikeranulf4" onclick="openModal('print/ikeranulf4.png')">
+                <h3>ikeranulf 4</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('ikeranulf 4', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\inuyasa.png" alt="inuyasa" onclick="openModal('print/inuyasa.png')">
+                <h3>inuyasa</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('inuyasa', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\jiraya.png" alt="jiraya" onclick="openModal('print/jiraya.png')">
+                <h3>jiraya</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('jiraya', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\kyubi.png" alt="kyubi" onclick="openModal('print/kyubi.png')">
+                <h3>kyubi</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('kyubi', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\naruto.png" alt="naruto" onclick="openModal('print/naruto.png')">
+                <h3>naruto</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('naruto', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\naruto2.png" alt="naruto2" onclick="openModal('print/naruto2.png')">
+                <h3>naruto 2</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('naruto 2', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\jotaro.png" alt="jotaro" onclick="openModal('print/jotaro.png')">
+                <h3>jotaro</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('jotaro', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\leucocito.png" alt="leucocito" onclick="openModal('print/leucocito.png')">
+                <h3>leucocito</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('leucocito', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\surge.png" alt="surge" onclick="openModal('print/surge.png')">
+                <h3>surge</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('surge', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\kingdom.png" alt="kingdom" onclick="openModal('print/kingdom.png')">
+                <h3>kingdom</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('kingdom', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\link.png" alt="link" onclick="openModal('print/link.png')">
+                <h3>link</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('link', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\magic.png" alt="magic" onclick="openModal('print/magic.png')">
+                <h3>magic</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('magic', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\magic2.png" alt="magic2" onclick="openModal('print/magic2.png')">
+                <h3>magic2</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('magic2', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\ritcher.png" alt="ritcher" onclick="openModal('print/ritcher.png')">
+                <h3>ritcher</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('ritcher', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\ritcher1.png" alt="ritcher1" onclick="openModal('print/ritcher1.png')">
+                <h3>ritcher1</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('ritcher1', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\skull.png" alt="Producto 35" onclick="openModal('print/skull.png')">
+                <h3>skull</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('skull', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\skull0.png" alt="skull1" onclick="openModal('print/skull0.png')">
+                <h3>skull 1</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('skull 1', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\skull1.png" alt="skull2" onclick="openModal('print/skull1.png')">
+                <h3>skull 2</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('skull 1', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\toxy.png" alt="toxy" onclick="openModal('print/toxy.png')">
+                <h3>toxy</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('toxy', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\venom.png" alt="venom" onclick="openModal('print/venom.png')">
+                <h3>venom</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('venom', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\thresh.png" alt="thresh" onclick="openModal('print/thresh.png')">
+                <h3>thresh</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('thresh', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\toro.png" alt="toro" onclick="openModal('print/toro.png')">
+                <h3>alistar</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('alistar', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+			
+			<div class="product">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\viego.png" alt="viego" onclick="openModal('print/viego.png')">
+                <h3>viego</h3>
+                <p>Descripción del producto 2.</p>
+                <p class="price">10.00€</p>
+                <button class="buy-button" onclick="addToCart('viego', 10.00)">
+                    <img src="botoncarrito.png" alt="Comprar">Comprar
+                </button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div id="cart">
+        <a href="carrito.html">
+            <img src="shopping-cart.png" alt="Carrito">
+        </a>
+    </div>
+    <footer>
+        <p>Derechos de autor © 2024 Tienda en Línea. Todos los derechos reservados.</p>
+    </footer>
+
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+	
+	<div class="social-buttons">
+        <a href="https://www.furaffinity.net/user/eroskun" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\FA-icon.png" alt="furaffinity">
+        </a>
+        <a href="https://x.com/eroskunlove" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\twitter-icon.png" alt="Twitter">
+        </a>
+        <a href="https://www.instagram.com/eroskunlove_commissionsopen/" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\instagram-icon.png" alt="Instagram">
+        </a>
+		<a href="https://t.me/EroskunLove" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\telegram-icon.png" alt="telegram">
+        </a>
+    </div>
+
+    <script>
+		function addToCart(productId) {
+            var productImage = document.getElementById(productId).querySelector('img').src;
+		}	
+        function addToCart(productName, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name: productName, price: price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function openModal(imgSrc) {
+            var modal = document.getElementById('myModal');
+            var modalImg = document.getElementById("modalImg");
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        var closeBtn = document.getElementsByClassName("close")[0];
+        closeBtn.onclick = function() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>
+
+

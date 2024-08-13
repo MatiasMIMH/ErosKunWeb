@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda en Línea</title>
+    <style>
+        @font-face {
+            font-family: 'Komika-Title-Kaps';
+            src: url(KomikaTitleKaps.ttf) format('truetype');
+        }
+        body {
+            font-family: 'Komika-Title-Kaps', Arial, sans-serif;
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+            background-color: #f3b9cb;
+        }
+
+        header {
+            background-color: #f3b9cb;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .menu {
+            background-color: #f3b9cb;
+            overflow: hidden;
+            margin-bottom: -4px;
+        }
+
+        .menu ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        .menu ul li {
+            display: inline-block;
+            margin: 0px;
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+        }
+
+        .menu ul li a img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .menu ul li a .hover-image {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .menu ul li a:hover .hover-image {
+            display: block;
+        }
+
+        .banner {
+            width: 100%;
+            max-height: 450px;
+            background-image: url('banner-highres.png');
+            background-size: cover;
+            background-position: center;
+            border: none;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding-top: 0px;
+            background-color: #f3b9cb;
+        }
+
+        .product {
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            float: left;
+            width: 23%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .white-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 0;
+        }
+
+        .cart-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            float: left;
+            margin-right: 10px;
+        }
+
+        .cart-item h3, .cart-item p {
+            margin: 0;
+            padding: 0;
+        }
+        .cart-item .price {
+            color: #555;
+            font-size: 1.2em;
+        }
+        .cart-item .remove-button {
+            float: right;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cart-item .remove-button:hover {
+            background-color: #c82333;
+        }
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .section-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+        }
+        footer {
+            background-color: #ea899a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            max-width: 300px;
+        }
+
+        .product h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .product p {
+            color: #555;
+        }
+
+        .product .price {
+            color: #555;
+            font-size: 1.2em;
+        }
+
+        .product .buy-button {
+            background-color: #fff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1em;
+        }
+
+        .product .buy-button:hover {
+            background-color: #fff;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+        }
+
+        footer {
+            background-color: #ea899a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        #cart {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        #cart img {
+            width: 70px;
+            height: auto;
+        }
+
+        .buy-button img {
+            width: 200px;
+            height: auto;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        #acceptButton img {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+        }
+		
+        .social-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-buttons a {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .social-buttons img {
+            width: 40px; /* Ajusta el tamaño según sea necesario */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="banner-container">
+            <a href="menu.html">
+                <img src="banner.png" alt="Banner" class="banner">
+            </a>
+        </div>
+    </header>
+    <nav class="menu">
+        <ul>
+            <li>
+                <a href="keychains.html">
+                    <img id="keychains-icon" src="keychains-icon.png" alt="Keychains"
+                         data-normal-image="keychains-icon.png"
+                         data-active-image="keychains-icon-active.png">
+                    <img class="hover-image" src="keychains-icon-hover.png" alt="Keychains Hover">
+                </a>
+            </li>
+            <li>
+                <a href="tarot.html">
+                    <img id="tarot-icon" src="tarot-icon.png" alt="tarot"
+                         data-normal-image="tarot-icon.png"
+                         data-active-image="tarot-icon-active.png">
+                    <img class="hover-image" src="tarot-icon-hover.png" alt="tarot Hover">
+                </a>
+            </li>
+            <li>
+                <a href="prints.html">
+                    <img id="Prints-icon" src="Prints-icon.png" alt="Prints"
+                         data-normal-image="Prints-icon.png"
+                         data-active-image="Prints-icon-active.png">
+                    <img class="hover-image" src="Prints-icon-hover.png" alt="Prints Hover">
+                </a>
+            </li>
+            <li>
+                <a href="dakimakura.html">
+                    <img id="Dakimakura-icon" src="Dakimakura-icon.png" alt="Dakimakura"
+                         data-normal-image="Dakimakura-icon.png"
+                         data-active-image="Dakimakura-icon-active.png">
+                    <img class="hover-image" src="Dakimakura-icon-hover.png" alt="Dakimakura Hover">
+                </a>
+            </li>
+            <li>
+                <a href="mousepads.html">
+                    <img id="Mousepads-icon" src="Mousepads-icon.png" alt="Mousepads"
+                         data-normal-image="Mousepads-icon.png"
+                         data-active-image="Mousepads-icon-active.png">
+                    <img class="hover-image" src="Mousepads-icon-hover.png" alt="Mousepads Hover">
+                </a>
+            </li>
+            <li>
+                <a href="standees.html">
+                    <img id="Standees-icon" src="Standees-icon.png" alt="Standees"
+                         data-normal-image="Standees-icon.png"
+                         data-active-image="Standees-icon-active.png">
+                    <img class="hover-image" src="Standees-icon-hover.png" alt="Standees Hover">
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div id="cart">
+        <a href="carrito.html">
+            <img src="shopping-cart.png" alt="Carrito de compras">
+        </a>
+    </div>
+    <div class="container">
+        <div class="product" id="Keychains">
+            <a href="producto1.html">
+                <img src="Keychains.png" alt="Keychains">
+            </a>
+            <h3>Keychains</h3>
+            <p>Llavero de diseño único de tus personajes favoritos.</p>
+            <p class="price">5.00€</p>
+            <button class="buy-button" onclick="addToCart('Keychains', 20.00)">
+                <img src="botoncarrito.png" alt="Comprar">Comprar
+            </button>
+        </div>
+        <div class="product" id="mousepad">
+            <a href="mousepads.html">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\mousepads\presentacion.png" alt="Mousepad">
+            </a>
+            <h3>Mousepad</h3>
+            <p>Mousepad con un diseño espectacular que te encantará.</p>
+            <p class="price">40.00€</p>
+            <button class="buy-button" onclick="addToCart('Mousepad', 40.00)">
+                <img src="botoncarrito.png" alt="Comprar">Comprar
+            </button>
+        </div>
+        <div class="product" id="tarot">
+            <a href="tarot.html"> 
+                <img src="Tarot.png" alt="Tarot">
+            </a>
+            <h3>Tarot</h3>
+            <p>Producto esotérico que te dirá cuál es tu futuro.</p>
+            <p class="price">40.00€</p>
+            <button class="buy-button" onclick="addToCart('Tarot', 40.00)">
+                <img src="botoncarrito.png" alt="Comprar">Comprar
+            </button>
+        </div>
+        <div class="product" id="prints">
+            <a href="prints.html">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\print\kingdom.png" alt="kingdom">
+            </a>
+            <h3>kingdom</h3>
+            <p>kingdom la prints mas vendida.</p>
+            <p class="price">10.00€</p>
+            <button class="buy-button" onclick="addToCart('kingdom', 10.00)">
+                <img src="botoncarrito.png" alt="Comprar">Comprar
+            </button>
+        </div>   
+        <div class="product" id="Standees">
+            <a href="standees.html">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\standees\anuncio.png" alt="Standees">
+            </a>
+            <h3>Standees</h3>
+            <p>Standees de tus personajes favoritos para disfrutar.</p>
+            <p class="price">40.00€</p>
+            <button class="buy-button" onclick="addToCart('Standees', 20.00)">
+                <img src="botoncarrito.png" alt="Comprar">Comprar
+            </button>
+        </div>
+        <div class="product" id="Dakimakura">
+            <a href="dakimakura.html">
+                <img src="C:\Users\rodrigo\Desktop\pagina web adri\dakimakura\dakimakuras.png" alt="Dakimakura">
+            </a>
+            <h3>Dakimakura</h3>
+            <p>Dakimakura para soñar despierto.</p>
+            <p class="price">60.00€</p>
+            <button class="buy-button" onclick="addToCart('Dakimakura', 20.00)">
+                <img src="botoncarrito.png" alt="Comprar">Comprar
+            </button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <footer>
+        <p>Derechos de autor © 2024 Tienda en Línea. Todos los derechos reservados.</p>
+    </footer>
+
+    <div id="ageModal" class="modal">
+        <div class="modal-content">
+            <img src="18aviso.png" alt="Imagen de advertencia" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 20px;">
+            <p>This website contains adult material, do you confirm that you are at least 18 years old?</p>
+            <a id="acceptButton" href="#">
+                <img src="18boton.png" alt="Aceptar">
+            </a>
+        </div>
+    </div>
+	
+	<div class="social-buttons">
+        <a href="https://www.furaffinity.net/user/eroskun" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\FA-icon.png" alt="furaffinity">
+        </a>
+        <a href="https://x.com/eroskunlove" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\twitter-icon.png" alt="Twitter">
+        </a>
+        <a href="https://www.instagram.com/eroskunlove_commissionsopen/" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\instagram-icon.png" alt="Instagram">
+        </a>
+		<a href="https://t.me/EroskunLove" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\telegram-icon.png" alt="telegram">
+        </a>
+    </div>
+
+       <script>
+        function showAgeModal() {
+            var modal = document.getElementById("ageModal");
+            var acceptButton = document.getElementById("acceptButton");
+
+            modal.style.display = "block";
+
+            acceptButton.onclick = function() {
+                modal.style.display = "none";
+                localStorage.setItem('ageModalShown', 'true');
+            };
+        }
+
+        window.onload = function() {
+            if (!localStorage.getItem('ageModalShown')) {
+                showAgeModal();
+            }
+        };
+
+        function checkActivePage() {
+            var currentPage = window.location.href;
+            if (currentPage.includes("keychains.html")) {
+                changeImage("keychains-icon");
+            } else if (currentPage.includes("tarot.html")) {
+                changeImage("tarot-icon");
+            } else if (currentPage.includes("prints.html")) {
+                changeImage("Prints-icon");
+            } else if (currentPage.includes("dakimakura.html")) {
+                changeImage("Dakimakura-icon");
+            } else if (currentPage.includes("mousepads.html")) {
+                changeImage("Mousepads-icon");
+            } else if (currentPage.includes("standees.html")) {
+                changeImage("Standees-icon");
+            }
+        }
+
+        function changeImage(buttonId) {
+            var button = document.getElementById(buttonId);
+            var normalImage = button.getAttribute('data-normal-image');
+            var activeImage = button.getAttribute('data-active-image');
+            var currentImage = button.getAttribute('src');
+            if (currentImage === normalImage) {
+                button.setAttribute('src', activeImage);
+            } else {
+                button.setAttribute('src', normalImage);
+            }
+        }
+
+        function addToCart(productName, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name: productName, price: price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        document.addEventListener("DOMContentLoaded", checkActivePage);
+    </script>
+</body>
+</html>
+
+
+

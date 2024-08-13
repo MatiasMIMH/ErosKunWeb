@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda en Línea</title>
+    <link rel="stylesheet" href="styles.css">
+	<style>
+	   body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.banner-container img {
+    max-width: 100%;
+}
+
+.container {
+    display: flex;
+    padding: 20px;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li img {
+    width: 100%;
+    cursor: pointer;
+}
+
+.product-details {
+    width: 80%;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 20px;
+}
+
+.product-details h1 {
+    margin-top: 0;
+}
+
+.price-discount {
+    display: flex;
+    align-items: baseline;
+}
+
+.price {
+    font-size: 1.5em;
+    color: #e60000;
+    margin-right: 10px;
+}
+
+.discount {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
+}
+
+.percent-off {
+    color: #e60000;
+}
+
+.product-options {
+    margin: 20px 0;
+}
+
+.option {
+    margin-bottom: 10px;
+}
+
+.purchase-options {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.buy-now {
+    background-color: #e60000;
+    color: #fff;
+}
+
+.add-to-cart {
+    background-color: #ffcc00;
+    color: #000;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="banner-container">
+            <img src="banner.png" alt="Banner" class="banner">
+        </div>
+    </header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><img src="producto1.png" alt="Producto 1"></li>
+                <li><img src="producto2.png" alt="Producto 2"></li>
+                <li><img src="producto3.png" alt="Producto 3"></li>
+                <li><img src="producto4.png" alt="Producto 4"></li>
+                <li><img src="producto5.png" alt="Producto 5"></li>
+            </ul>
+        </div>
+        <main class="product-details">
+            <h1>Producto</h1>
+            <div class="price-discount">
+                <span class="price">0,99€</span>
+                <span class="discount">13,40€</span>
+                <span class="percent-off">-92% dto.</span>
+            </div>
+            <p>Pokemon Plush Stuff Toy Pikachu Charizard Doll Gengar Squirtle Plush Doll Espeon Glaceon Umbreon Soft Cartoon Toys, regalo para niños</p>
+            <div class="product-options">
+                <div class="option">
+                    <label for="height">Altura:</label>
+                    <select id="height">
+                        <option value="20-30CM">20-30CM</option>
+                    </select>
+                </div>
+                <div class="option">
+                    <label for="color">Color:</label>
+                    <select id="color">
+                        <option value="bulbasaur">Bulbasaur</option>
+                        <option value="charmander">Charmander</option>
+                        <!-- Añadir más opciones aquí -->
+                    </select>
+                </div>
+            </div>
+            <div class="purchase-options">
+                <button class="buy-now">Comprar</button>
+                <button class="add-to-cart">Añadir a la cesta</button>
+            </div>
+        </main>
+    </div>
+	    <style>
+	function comprarAhora() {
+    alert('Producto comprado con éxito');
+}
+
+function añadirAlCarrito() {
+    alert('Producto añadido al carrito');
+}
+        </style>  
+</body>
+</html>

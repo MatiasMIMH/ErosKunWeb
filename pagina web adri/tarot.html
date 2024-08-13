@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda en Línea</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        @font-face {
+            font-family: 'Komika-Title-Kaps';
+            src: url(KomikaTitleKaps.ttf) format('truetype');
+        }
+        body {
+            font-family: 'Komika-Title-Kaps', Arial, sans-serif;
+            font-size: 30px;
+            margin: 0;
+            padding: 0;
+            background-color: #f3b9cb;
+        }
+
+        header {
+            background-color: #f3b9cb;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .menu {
+            background-color: #f3b9cb;
+            overflow: hidden;
+            margin-bottom: -4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        .menu ul li {
+            display: inline-block;
+            margin: 0px;
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            display: inline-block;
+            position: relative; 
+        }
+
+        .menu ul li a img {
+            max-width: 100%; 
+            height: auto;
+        }
+
+        .menu ul li a .hover-image {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-width: 100%; 
+            height: auto;
+        }
+
+        .menu ul li a:hover .hover-image {
+            display: block;
+        }
+
+        .banner {
+            width: 100%;
+            max-height: 450px; 
+            background-image: url('banner-highres.png'); 
+            background-size: cover;
+            background-position: center;
+            border: none; 
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding-top: 0; 
+            background-color: #f3b9cb;
+            position: relative; 
+            top: -50px; 
+            z-index: 0; 
+        }
+
+        .product {
+            background: #fff; 
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative; 
+            margin: 20px auto; 
+            border-radius: 0px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .swiper-container {
+            margin-top: 50px;
+            margin: 50 auto; /* Centrar horizontalmente */
+            width: 100%; /* Opcional: ajustar el ancho según necesidades */
+        }
+
+        .swiper-wrapper {
+            transition-property: transform;
+            box-sizing: content-box;
+        }
+
+        .swiper-slide {
+            float: left;
+            width: 50%;
+            position: relative;
+            transition-property: transform, opacity;
+        }
+
+        .product-images img,
+        .product-images video {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            cursor: pointer; 
+        }
+
+        .product-images img {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .product-images video {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .white-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 0; 
+        }
+
+        .cart-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            float: left;
+            margin-right: 10px;
+        }
+
+        .cart-item h3, .cart-item p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-item .price {
+            color: #555;
+            font-size: 1.2em;
+        }
+
+        .cart-item .remove-button {
+            float: right;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-item .remove-button:hover {
+            background-color: #c82333;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+        }
+
+        footer {
+            background-color: #ea899a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        #cart {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        #cart img {
+            width: 70px; 
+            height: auto;
+        }
+
+        .buy-button {
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .buy-button img {
+            width: 200px; 
+            height: auto; 
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 50px; /* Ajuste para centrar verticalmente */
+            box-sizing: border-box; /* Asegurar que el padding no aumente el tamaño total */
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 100%; /* Ajuste del ancho máximo del contenido */
+            max-height: 100%; /* Ajuste de la altura máxima del contenido */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #f3b9cb;
+            float: right;
+            font-size: 3em; /* Tamaño del icono de cierre */
+            font-weight: bold;
+            transition: 0.3s;
+            padding: 20px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+		
+		/* Estilos para los botones de redes sociales */
+        .social-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000; /* Asegura que esté encima de otros elementos */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-buttons a {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .social-buttons img {
+            width: 40px; /* Ajusta el tamaño según sea necesario */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="banner-container">
+            <a href="menu.html">
+                <img src="banner.png" alt="Banner" class="banner">
+            </a>
+        </div>
+    </header>
+    <nav class="menu">
+        <ul>
+            <li>
+                <a href="keychains.html">
+                    <img id="keychains-icon" src="keychains-icon.png" alt="Keychains"
+                         data-normal-image="keychains-icon.png"
+                         data-active-image="keychains-icon-active.png">
+                    <img class="hover-image" src="keychains-icon-hover.png" alt="Keychains Hover">
+                </a>
+            </li>
+            <li>
+                <a href="tarot.html">
+                    <img id="tarot-icon" src="tarot-icon-hover.png" alt="Tarot"
+                         data-normal-image="tarot-icon.png"
+                         data-active-image="tarot-icon-active.png">
+                    <img class="hover-image" src="tarot-icon-hover.png" alt="Tarot Hover">
+                </a>
+            </li>
+            <li>
+                <a href="prints.html">
+                    <img id="prints-icon" src="prints-icon.png" alt="Prints"
+                         data-normal-image="prints-icon.png"
+                         data-active-image="prints-icon-active.png">
+                    <img class="hover-image" src="prints-icon-hover.png" alt="Prints Hover">
+                </a>
+            </li>
+            <li>
+                <a href="dakimakura.html">
+                    <img id="dakimakura-icon" src="dakimakura-icon.png" alt="Dakimakura"
+                         data-normal-image="dakimakura-icon.png"
+                         data-active-image="dakimakura-icon-active.png">     
+					<img class="hover-image" src="dakimakura-icon-hover.png" alt="Dakimakura Hover">
+                </a>
+            </li>
+            <li>
+                <a href="mousepads.html">
+                    <img id="mousepads-icon" src="mousepads-icon.png" alt="Mousepads"
+                         data-normal-image="mousepads-icon.png"
+                         data-active-image="mousepads-icon-active.png">
+                    <img class="hover-image" src="mousepads-icon-hover.png" alt="Mousepads Hover">
+                </a>
+            </li>
+            <li>
+                <a href="standees.html">
+                    <img id="standees-icon" src="standees-icon.png" alt="Standees"
+                         data-normal-image="standees-icon.png"
+                         data-active-image="standees-icon-active.png">
+                    <img class="hover-image" src="standees-icon-hover.png" alt="Standees Hover">
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <main>
+            <section class="product">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <video controls autoplay loop muted style="max-width: 40%; height: auto;"
+                                       onclick="openModal('videotarot.mp4')">
+                                    <source src="videotarot.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <img src="tarot.png" alt="Tarot 1" style="max-width: 45%;"
+                                     onclick="openModal('tarot.png')">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <img src="tarot1.png" alt="Tarot 2" style="max-width: 37%;"
+                                     onclick="openModal('tarot1.png')">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <img src="tarotder.png" alt="Tarot 3" style="max-width: 60%;"
+                                     onclick="openModal('tarotder.png')">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <img src="tarot3.png" alt="Tarot 4" style="max-width: 50%;"
+                                     onclick="openModal('tarot3.png')">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <img src="tarot4.png" alt="Tarot 5" style="max-width: 50%;"
+                                     onclick="openModal('tarot4.png')">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <img src="tarot5.png" alt="Tarot 6" style="max-width: 80%;"
+                                     onclick="openModal('tarot5.png')">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-images">
+                                <video controls autoplay loop muted style="max-width: 28%; height: auto;"
+                                       onclick="openModal('videooro.mp4')">
+                                    <source src="videooro.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+                <h3>Tarot</h3>
+                <p>El mejor tarot que te ayudará a ver tu futuro.</p>
+                <p class="price">40.00€</p>
+                <a href="#" class="buy-button" onclick="addToCart('Tarot', 40.00)">
+                    <img src="botoncarrito.png" alt="Comprar">
+                </a>
+
+            </section>
+        </main>
+    </div>
+
+    <aside id="cart">
+        <a href="carrito.html">
+            <img src="shopping-cart.png" alt="Carrito">
+        </a>
+    </aside>
+
+    <footer>
+        <p>Derechos de autor © 2024 Tienda en Línea. Todos los derechos reservados.</p>
+    </footer>
+
+    <div id="myModal" class="modal" onclick="closeModalOutside(event)">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="imgModal">
+        <video class="modal-content" id="videoModal" controls autoplay loop muted>
+        </video>
+    </div>
+	
+	<div class="social-buttons">
+        <a href="https://www.furaffinity.net/user/eroskun" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\FA-icon.png" alt="furaffinity">
+        </a>
+        <a href="https://x.com/eroskunlove" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\twitter-icon.png" alt="Twitter">
+        </a>
+        <a href="https://www.instagram.com/eroskunlove_commissionsopen/" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\instagram-icon.png" alt="Instagram">
+        </a>
+		<a href="https://t.me/EroskunLove" target="_blank">
+            <img src="C:\Users\rodrigo\Desktop\pagina web adri\redes\telegram-icon.png" alt="telegram">
+        </a>
+    </div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: true,
+        });
+
+        function openModal(src) {
+            var modal = document.getElementById('myModal');
+            var img = document.getElementById('imgModal');
+            var video = document.getElementById('videoModal');
+
+            if (src.endsWith('.mp4')) {
+                img.style.display = 'none';
+                video.style.display = 'block';
+                video.src = src;
+            } else {
+                video.style.display = 'none';
+                img.style.display = 'block';
+                img.src = src;
+            }
+
+            modal.style.display = 'block'; 
+        }
+
+        function closeModal() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+
+        function closeModalOutside(event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function addToCart(productName, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+            let miniatura = 'tarot.png';
+    
+            cart.push({ name: productName, price: price, miniatura: miniatura });
+    
+            localStorage.setItem('cart', JSON.stringify(cart));
+}
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

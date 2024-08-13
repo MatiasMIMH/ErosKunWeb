@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda en Línea</title>
+    <style>
+        @font-face {
+            font-family: 'Komika-Title-Kaps';
+            src: url(KomikaTitleKaps.ttf) format('truetype');
+        }
+        body {
+            font-family: 'Komika-Title-Kaps', Arial, sans-serif;
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+            background-color: #f3b9cb;
+        }
+
+        header {
+            background-color: #f3b9cb;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .menu {
+            background-color: #f3b9cb;
+            overflow: hidden;
+            margin-bottom: -4px; 
+        }
+
+        .menu ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        .menu ul li {
+            display: inline-block;
+            margin: 0px; 
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            display: inline-block;
+            position: relative; 
+        }
+
+        .menu ul li a img {
+            max-width: 100%; 
+            height: auto;
+        }
+
+        .menu ul li a .hover-image {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-width: 100%; 
+            height: auto;
+        }
+
+        .menu ul li a:hover .hover-image {
+            display: block;
+        }
+
+        .banner {
+            width: 100%;
+            max-height: 450px; 
+            background-image: url('banner-highres.png'); 
+            background-size: cover;
+            background-position: center;
+            border: none; 
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding-top: 20px; 
+            background-color: #f3b9cb; 
+        }
+
+        .product {
+            background: #fff; 
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            float: left;
+            width: 23%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        
+        .white-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; 
+        }
+        
+        .cart-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            float: left;
+            margin-right: 10px;
+        }
+        
+        .cart-item h3, .cart-item p {
+            margin: 0;
+            padding: 0;
+        }
+        .cart-item .price {
+            color: #555;
+            font-size: 1.2em;
+        }
+        .cart-item .remove-button {
+            float: right;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cart-item .remove-button:hover {
+            background-color: #c82333;
+        }
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .section-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+        }
+        footer {
+            background-color: #ea899a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            max-width: 300px; 
+        }
+
+        .product h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .product p {
+            color: #555;
+        }
+
+        .product .price {
+            color: #555;
+            font-size: 1.2em;
+        }
+
+        .product .buy-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .product .buy-button:hover {
+            background-color: #0056b3;
+        }
+
+        .checkout-button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-button:hover {
+            background-color: #218838;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+		
+		.modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: transparent;
+            text-align: center;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="banner-container">
+            <a href="menu.html">
+                <img src="banner.png" alt="Banner" class="banner">
+            </a>
+        </div>
+    </header>
+    <nav class="menu">
+        <ul>
+            <li>
+                <a href="keychains.html">
+                    <img id="keychains-icon" src="keychains-icon.png" alt="Keychains"
+                         data-normal-image="keychains-icon.png"
+                         data-active-image="keychains-icon-active.png">
+                    <img class="hover-image" src="keychains-icon-hover.png" alt="Keychains Hover">
+                </a>
+            </li>
+            <li>
+                <a href="tarot.html">
+                    <img id="tarot-icon" src="tarot-icon.png" alt="Tarot"
+                         data-normal-image="tarot-icon.png"
+                         data-active-image="tarot-icon-active.png">
+                    <img class="hover-image" src="tarot-icon-hover.png" alt="Tarot Hover">
+                </a>
+            </li>
+            <li>
+                <a href="prints.html">
+                    <img id="prints-icon" src="prints-icon.png" alt="Prints"
+                         data-normal-image="prints-icon.png"
+                         data-active-image="prints-icon-active.png">
+                    <img class="hover-image" src="prints-icon-hover.png" alt="Prints Hover">
+                </a>
+            </li>
+            <li>
+                <a href="dakimakura.html">
+                    <img id="dakimakura-icon" src="dakimakura-icon.png" alt="Dakimakura"
+                         data-normal-image="dakimakura-icon.png"
+                         data-active-image="dakimakura-icon-active.png">
+                    <img class="hover-image" src="dakimakura-icon-hover.png" alt="Dakimakura Hover">
+                </a>
+            </li>
+            <li>
+                <a href="mousepads.html">
+                    <img id="mousepads-icon" src="mousepads-icon.png" alt="Mousepads"
+                         data-normal-image="mousepads-icon.png"
+                         data-active-image="mousepads-icon-active.png">
+                    <img class="hover-image" src="mousepads-icon-hover.png" alt="Mousepads Hover">
+                </a>
+            </li>
+            <li>
+                <a href="standees.html">
+                    <img id="standees-icon" src="standees-icon.png" alt="Standees"
+                         data-normal-image="standees-icon.png"
+                         data-active-image="standees-icon-active.png">
+                    <img class="hover-image" src="standees-icon-hover.png" alt="Standees Hover">
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Productos Destacados</h2>
+        <div class="product" id="product-1">
+            <img src="producto1.jpg" alt="Producto 1">
+            <h3>Producto 1</h3>
+            <p class="price">$19.99</p>
+            <button class="buy-button" onclick="addToCart('product-1')">Agregar al Carrito</button>
+        </div>
+        <div class="product" id="product-2">
+            <img src="producto2.jpg" alt="Producto 2">
+            <h3>Producto 2</h3>
+            <p class="price">$24.99</p>
+            <button class="buy-button" onclick="addToCart('product-2')">Agregar al Carrito</button>
+        </div>
+        <div class="product" id="product-3">
+            <img src="tarot.png" alt="Producto 3">
+            <h3>Producto 3</h3>
+            <p class="price">$29.99</p>
+            <button class="buy-button" onclick="addToCart('product-3')">Agregar al Carrito</button>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="white-box">
+            <h2 class="section-title">Carrito de Compras</h2>
+            <div id="cart"></div>
+            <button class="checkout-button" onclick="openModal()">Pagar</button>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-image" src="" alt="Producto en Carrito">
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Tienda en Línea. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function addToCart(productId) {
+            // Obtener la imagen del producto seleccionado
+            var productImage = document.getElementById(productId).querySelector('img').src;
+
+            // Crear un nuevo elemento de producto en el carrito
+            var cartItem = document.createElement('div');
+            cartItem.classList.add('cart-item');
+            cartItem.innerHTML = `
+                <img src="${productImage}" alt="Producto en Carrito">
+                <h3>Producto</h3>
+                <p class="price">$19.99</p>
+                <button class="remove-button" onclick="removeFromCart(this)">Eliminar</button>
+            `;
+
+            // Añadir el elemento al carrito
+            document.getElementById('cart').appendChild(cartItem);
+        }
+
+        function removeFromCart(button) {
+            // Eliminar el producto del carrito
+            button.parentElement.remove();
+        }
+
+        function openModal() {
+            // Mostrar el modal
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'block';
+
+            // Obtener la imagen del primer producto en el carrito y mostrarla en el modal
+            var firstProductImage = document.querySelector('.cart-item img').src;
+            document.getElementById('modal-image').src = firstProductImage;
+        }
+
+        function closeModal() {
+            // Cerrar el modal
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
+
