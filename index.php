@@ -77,6 +77,7 @@
             <a href="">
                 <img src="" alt="Dakimakura">
             </a>
+            hola
             <h3>Dakimakura</h3>
             <p>Dakimakura para soñar despierto.</p>
             <p class="price">60.00€</p>
